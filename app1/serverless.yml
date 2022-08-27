@@ -1,0 +1,22 @@
+# serverless.yml
+
+service: user-blog
+provider:
+  name: aws
+  stage: dev
+  region: ap-south-1
+
+functions:
+  userAPI:
+    handler: user.handler
+    environment: ${file(env.${opt:stage, self:provider.stage}.json)}
+    events:
+      - http:
+          path: /register
+          method: post
+      - http:
+          path: /login
+          method: post
+  getBlogList:
+    handler: services/blog.getBlogList
+    name: ${self:service}-getDeviceList
